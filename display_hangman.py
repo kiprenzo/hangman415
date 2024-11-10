@@ -59,7 +59,7 @@ def display(tries):
                    |     
                    -
                 """,
-                # initial empty state
+                # hardmode empty state (6 lives)
                 """
                    --------
                    |      |
@@ -67,6 +67,36 @@ def display(tries):
                    |    
                    |      
                    |     
+                   -
+                """,
+                # medium empty state (7 lives)
+                """
+                   --------
+                   |      
+                   |      
+                   |    
+                   |      
+                   |     
+                   -
+                """,
+                # easy empty state (8 lives)
+                """
+                   -
+                   |      
+                   |      
+                   |    
+                   |      
+                   |     
+                   -
+                """,
+                # baby empty state (9 lives)
+                """
+                   
+                         
+                         
+                       
+                         
+                        
                    -
                 """
     ]
