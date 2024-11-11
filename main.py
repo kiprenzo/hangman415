@@ -25,13 +25,13 @@ won_game = (["Looky here, you actually pulled it off.", "Colour me impressed. We
 
 
 class Hangman:
-    def __init__(self, game_word: str):
+    def __init__(self, game_word: str, attempts_left: int = 6):
         self.game_word = game_word.upper()
         self.word_completion = "_" * len(self.game_word)
         self.guessed = False
         self.guessed_letters = []
         # self.guessed_words = []
-        self.attempts_left = 6
+        self.attempts_left = attempts_left
 
     def is_valid_guess(self, guess):
         if len(guess) == 1 and guess.isalpha():
@@ -84,6 +84,7 @@ class Hangman:
             guess = self.user_get_letter_guess()
             if guess in self.guessed_letters:
                 print(f"You already tried {guess}.")
+                continue
             self.guess_in_word(guess)
 
             if "_" not in self.word_completion:
