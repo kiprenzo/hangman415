@@ -51,14 +51,15 @@ class Hangman:
             
     def guess_in_word(self, guess):
         if guess not in self.game_word:
-            print(r.choice(wrong_guess))
+            
             self.attempts_left -= 1
             self.guessed_letters.append(guess)
             print(display(self.attempts_left))
             print (f"\n\t\t{self.word_completion}\n")
             print(f"\n\tAlready guessed: {[l for l in self.guessed_letters if l not in self.game_word]}\n")
+            print(r.choice(wrong_guess))
         else:
-                print(r.choice(correct_guess))
+                
                 self.guessed_letters.append(guess)
                 word_as_list = list(self.word_completion)
                 indices = [i for i, letter in enumerate(self.game_word) if letter == guess]
@@ -68,6 +69,7 @@ class Hangman:
                 print(display(self.attempts_left))
                 print (f"\n\t\t{self.word_completion}\n")
                 print(f"\n\tAlready guessed: {[l for l in self.guessed_letters if l not in self.game_word]}\n")
+                print(r.choice(correct_guess))
         
 
 
