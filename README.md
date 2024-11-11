@@ -21,3 +21,10 @@ You will find this on the light side, with the only thing needed to run the game
 Run: `pip install requests` to install.
 
 If this doesn't work, try replacing `pip` with `pip3`.
+
+### What I learned
+
+This was actually a blast. I got to practice the Python syntax, reinforce my knowledge of `if` statements, `while` loops, Classes and functions. I learned to abstract my code as a principle of OOP and break down my functions into single tasks. I got to practice bash/zsh as well as my very first usage of `git add`s, `commit`s and `push`es. I can see why github is as huge as it is. It's so smooth. ❤️‍🔥
+
+I'm sure I have a way to go yet as I'm only starting but this feels like a promising, if basic, foundation for my future work.
+
