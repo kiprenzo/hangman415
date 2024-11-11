@@ -7,7 +7,7 @@ def display(tries):
                    |     \\|/
                    |      |
                    |     / \\
-                   -
+             ---------
                 """,
                 # head, torso, both arms, and one leg
                 """
@@ -17,7 +17,7 @@ def display(tries):
                    |     \\|/
                    |      |
                    |     / 
-                   -
+             ---------
                 """,
                 # head, torso, and both arms
                 """
@@ -27,7 +27,7 @@ def display(tries):
                    |     \\|/
                    |      |
                    |      
-                   -
+             ---------
                 """,
                 # head, torso, and one arm
                 """
@@ -37,7 +37,7 @@ def display(tries):
                    |     \\|
                    |      |
                    |     
-                   -
+             ---------
                 """,
                 # head and torso
                 """
@@ -47,7 +47,7 @@ def display(tries):
                    |      |
                    |      |
                    |     
-                   -
+             ---------
                 """,
                 # head
                 """
@@ -57,7 +57,7 @@ def display(tries):
                    |    
                    |      
                    |     
-                   -
+             ---------
                 """,
                 # hardmode empty state (6 lives)
                 """
@@ -67,7 +67,7 @@ def display(tries):
                    |    
                    |      
                    |     
-                   -
+             ---------
                 """,
                 # medium empty state (7 lives)
                 """
@@ -77,7 +77,7 @@ def display(tries):
                    |    
                    |      
                    |     
-                   -
+             ---------
                 """,
                 # easy empty state (8 lives)
                 """
@@ -87,7 +87,7 @@ def display(tries):
                    |    
                    |      
                    |     
-                   -
+             ---------
                 """,
                 # baby empty state (9 lives)
                 """
@@ -97,7 +97,7 @@ def display(tries):
                        
                          
                         
-                   -
+             ---------
                 """
     ]
     return stages[tries]
