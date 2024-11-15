@@ -1,83 +1,81 @@
 import random as r
 import requests
+'''
+This is an entirely CLI-based game of Hangman, where you try to guess a random word one character at a time.
+It has a simple, clear visual, some neat quality of life features, and a healthy helping of sass.
 
+`display(attempts_left)` is an ASCII based visual representation of our soon to be hanged fella,
+indicating how many lives/attempts the player has left.
+It is a list of strings, indexed so each visual represents the number of lives left.
+'''
 from display_hangman import display
 
-word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
-
+word_site = "https://www.mit.edu/~ecprice/wordlist.10000" # contains swearwords
 response = requests.get(word_site)
 word_list = response.text.splitlines()
-long_words = [word for word in word_list if len(word) > 2]
+long_words = [word for word in word_list if len(word) > 3]
 
-
-# game_word = r.choice(long_words).upper()
-
-# This section contains lists of phrases that add some sassy flavour to the prompts.
-# These get called using random.choice() in the functions below.
-input_prompt = (["Enter a letter, chief. ","What do you think...? ", "What have we got, then? ", "What's up next? ", "Go ahead... "])
-valid_guess = (["That will do. ","I suppose... ", "Fine. ", "Let's see here... "])
-correct_guess = (["Very good... ", "You live yet... ", "Interesting... ", "Hmm. You got one. "])
-wrong_guess = (["Afraid it's not in the word... ", "Ahh, so close. ", "Not this one... ", "Ouch. No. "])
-invalid_guess = (["Not sure that's one letter...", "No. That won't work. Guess one letter. ", "I don't think so, chief. Try a single letter. ", "Nu-uh."])
-lets_play = (["Are you ready then?", "Let's try your luck.", "Back again, are we...", "Let's see how you get on this time..."])
-lost_game = (["Too bad, bucko. You'll get 'em next time.", "How unfortunate. Maybe next time.", "Well well. You gave it your best. Perhaps you'll try again.", "So close. Better luck next time."])
-won_game = (["Looky here, you actually pulled it off.", "Colour me impressed. Well played.", "That's the one... well done. Another?"])
-
+'''
+Here we import a dictionary of various phrases, that add sassy flavour to our gamesmaster.
+We then call them using `random.choice` throughout the script.
+'''
+from phrases import phrases
+def phrase(phrase_type):
+    print(r.choice(phrases[phrase_type]))
 
 class Hangman:
+    '''
+    This makes up the bulk of the game's logic.
+    `word_completion` is the game_word represented with '_' underscores.
+    `guessed` is a boolean state defining whether the games has been won.
+    `attempts_left` is the player's lives, 6 by default, can go between 1-9.
+    '''
     def __init__(self, game_word: str, attempts_left: int = 6):
         self.game_word = game_word.upper()
-        self.word_completion = "_" * len(self.game_word)
+        self.word_completion = "_" * len(self.game_word) # TODO can be list comprehension 
         self.guessed = False
         self.guessed_letters = []
-        # self.guessed_words = []
         self.attempts_left = attempts_left
 
     def is_valid_guess(self, guess):
+        # We only allow 1-letter guesses.
         if len(guess) == 1 and guess.isalpha():
             return True
         else:
             return False
         
     def user_get_letter_guess(self):
+        # We collect a valid user input, making it upper-case.
         while True:
-            guess = input(r.choice(input_prompt))
-            if self.is_valid_guess(guess) == True:
-                # print(r.choice(valid_guess)) - redundant
+            guess = input(r.choice(phrases['input_prompt']))
+            if self.is_valid_guess(guess):
                 return guess.upper()
-
             else:
-                print(r.choice(invalid_guess))
-            
+                phrases('invalid_guess')
+
     def guess_in_word(self, guess):
-        if guess not in self.game_word:
-            
-            self.attempts_left -= 1
-            self.guessed_letters.append(guess)
-            print(display(self.attempts_left))
-            print (f"\n\t\t{self.word_completion}\n")
-            print(f"\n\tAlready guessed: {[l for l in self.guessed_letters if l not in self.game_word]}\n")
-            print(r.choice(wrong_guess))
-        else:
-                
-                self.guessed_letters.append(guess)
-                word_as_list = list(self.word_completion)
-                indices = [i for i, letter in enumerate(self.game_word) if letter == guess]
-                for index in indices:
+        '''
+        We replace the underscores in `word_completion` with the letter if the player's guess is in the secret gameword,
+        we take off a life and show letters guessed that are not in the word as a nice bit of quality of life.
+        '''
+        if guess in self.game_word:
+            word_as_list = list(self.word_completion)
+            for index, letter in enumerate(self.game_word):
+                if letter == guess:
                     word_as_list[index] = guess
-                self.word_completion = "".join(word_as_list)
-                print(display(self.attempts_left))
-                print (f"\n\t\t{self.word_completion}\n")
-                print(f"\n\tAlready guessed: {[l for l in self.guessed_letters if l not in self.game_word]}\n")
-                print(r.choice(correct_guess))
-        
-
-
+            self.word_completion = "".join(word_as_list)
+            response = phrase('correct_guess')
+        else:
+            self.attempts_left -= 1
+            response = phrase('wrong_guess')
+        self.guessed_letters.append(guess)
+        print(display(self.attempts_left))
+        print(f"\n\t\t{self.word_completion}\n")
+        print(f"\n\tAlready guessed: {[l for l in self.guessed_letters if l not in self.game_word]}\n")
+        response
 
     def play(self):
-        # This function contains the whole logic for the Hangman game.
-
-        print(r.choice(lets_play))
+        phrase('lets_play')
         print(display(self.attempts_left))
         print (f"\n\t\t{self.word_completion}\n")
         while not self.guessed and self.attempts_left > 0:
@@ -86,31 +84,30 @@ class Hangman:
                 print(f"You already tried {guess}.")
                 continue
             self.guess_in_word(guess)
-
             if "_" not in self.word_completion:
                     self.guessed = True
 
         if self.attempts_left == 0:
+            # Here we reveal the word if the player runs out of lives.
             self.word_completion = self.game_word
             print(display(self.attempts_left))
             print (f"\n\t\t{self.word_completion}\n")
-            print(r.choice(lost_game))
-        if self.guessed == True:
-            print(f"\n{r.choice(won_game)}")
+            phrase('lost_game')
+        if self.guessed:
+            print(f"\n{r.choice(phrases['won_game'])}")
             
-
-
-def main():
-    game_word = r.choice(long_words).upper()
-    game = Hangman(game_word)  # Create an instance of Hangman with game_word
+def play_game():
+    # A while loop to allow the player to 'play again', with a new random game_word.
+    game_word = r.choice(long_words)
+    game = Hangman(game_word) 
     game.play()  
     while input("Play again? (Y/N) ").upper() == "Y":
-        game_word = r.choice(long_words).upper()
-        game = Hangman(game_word)  # Create a new instance for each new game
+        game_word = r.choice(long_words)
+        game = Hangman(game_word)
         game.play()
 
 if __name__ == "__main__":
-    main()
+    play_game()
 
         
 
