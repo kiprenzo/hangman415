@@ -51,7 +51,7 @@ class Hangman:
             if self.is_valid_guess(guess):
                 return guess.upper()
             else:
-                phrases('invalid_guess')
+                phrase('invalid_guess')
 
     def guess_in_word(self, guess):
         '''
