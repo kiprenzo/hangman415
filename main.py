@@ -1,5 +1,6 @@
 import random as r
 import requests
+import sys
 '''
 This is an entirely CLI-based game of Hangman, where you try to guess a random word one character at a time.
 It has a simple, clear visual, some neat quality of life features, and a healthy helping of sass.
@@ -56,7 +57,7 @@ class Hangman:
     def guess_in_word(self, guess):
         '''
         We replace the underscores in `word_completion` with the letter if the player's guess is in the secret gameword,
-        we take off a life and show letters guessed that are not in the word as a nice bit of quality of life.
+        If it's not, we take off a life and show letters guessed that are not in the word as a nice bit of quality of life.
         '''
         if guess in self.game_word:
             word_as_list = list(self.word_completion)
@@ -98,12 +99,23 @@ class Hangman:
             
 def play_game():
     # A while loop to allow the player to 'play again', with a new random game_word.
+    if len(sys.argv) == 2:
+        try:
+            lives = int(sys.argv[1])
+            if not (1 <= lives <= 9):
+                print("Error: Lives must be an integer between 1 and 9.")
+                return
+        except ValueError:
+            print("Enter the number of lives you'd like to play with.")
+            return
+    else:
+        lives = 6
     game_word = r.choice(long_words)
-    game = Hangman(game_word) 
+    game = Hangman(game_word, lives) 
     game.play()  
     while input("Play again? (Y/N) ").upper() == "Y":
         game_word = r.choice(long_words)
-        game = Hangman(game_word)
+        game = Hangman(game_word, lives)
         game.play()
 
 if __name__ == "__main__":
