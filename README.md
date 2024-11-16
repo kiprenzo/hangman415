@@ -10,6 +10,7 @@ To add a bit of flair, I've added randomized, campy lines for the... executioner
 ## To run
 
 Once you have the scripts loaded, run `python main.py` with an optional argument for the lives you'd like to have, from 1 up to 9. The default is 6.
+
 e.g. `python main.py 8`
 
 ---
